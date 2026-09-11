@@ -1,0 +1,334 @@
+/**
+ * Ayuvera - Black Garlic Chyawanprash Landing Page Logic
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Gallery Thumbnail Switcher
+  const mainImage = document.getElementById('mainProductImage');
+  const thumbs = document.querySelectorAll('.thumb-item');
+
+  thumbs.forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      thumbs.forEach(t => t.classList.remove('active'));
+      thumb.classList.add('active');
+      const newSrc = thumb.getAttribute('data-img');
+      if (newSrc && mainImage) {
+        mainImage.style.opacity = '0.5';
+        setTimeout(() => {
+          mainImage.src = newSrc;
+          mainImage.style.opacity = '1';
+        }, 150);
+      }
+    });
+  });
+
+  // 2. Pricing & Bundle Selector State
+  let currentBundle = {
+    title: '1 जार (100% Sugar-Free • 30 दिन की खुराक)',
+    price: 1899,
+    originalPrice: 2499,
+    savings: '24% की बचत'
+  };
+
+  const bundleCards = document.querySelectorAll('.bundle-card');
+  const priceDisplay = document.getElementById('currentPrice');
+  const originalPriceDisplay = document.getElementById('originalPrice');
+  const discountTag = document.getElementById('discountTag');
+
+  bundleCards.forEach(card => {
+    card.addEventListener('click', () => {
+      bundleCards.forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      
+      const price = parseInt(card.getAttribute('data-price'), 10);
+      const original = parseInt(card.getAttribute('data-original'), 10);
+      const discount = card.getAttribute('data-discount');
+      const title = card.getAttribute('data-title');
+
+      currentBundle = {
+        title: title,
+        price: price,
+        originalPrice: original,
+        savings: discount
+      };
+
+      if (priceDisplay) priceDisplay.textContent = `₹${price.toLocaleString('en-IN')}`;
+      if (originalPriceDisplay) originalPriceDisplay.textContent = `₹${original.toLocaleString('en-IN')}`;
+      if (discountTag) discountTag.textContent = discount;
+    });
+  });
+
+  // 3. Quantity Steppers
+  let quantity = 1;
+  const qtyVal = document.getElementById('qtyValue');
+  const qtyMinus = document.getElementById('qtyMinus');
+  const qtyPlus = document.getElementById('qtyPlus');
+
+  if (qtyMinus && qtyPlus && qtyVal) {
+    qtyMinus.addEventListener('click', () => {
+      if (quantity > 1) {
+        quantity--;
+        qtyVal.textContent = quantity;
+      }
+    });
+
+    qtyPlus.addEventListener('click', () => {
+      quantity++;
+      qtyVal.textContent = quantity;
+    });
+  }
+
+  // 4. Cart State & Drawer
+  let cartItems = [];
+  const cartDrawer = document.getElementById('cartDrawer');
+  const cartOverlay = document.getElementById('cartOverlay');
+  const cartOpenBtn = document.getElementById('cartOpenBtn');
+  const cartCloseBtn = document.getElementById('cartCloseBtn');
+  const cartBadge = document.getElementById('cartBadge');
+  const cartItemsContainer = document.getElementById('cartItemsBody');
+  const cartSubtotal = document.getElementById('cartSubtotal');
+
+  function openCart() {
+    if (cartDrawer && cartOverlay) {
+      cartDrawer.classList.add('active');
+      cartOverlay.classList.add('active');
+    }
+  }
+
+  function closeCart() {
+    if (cartDrawer && cartOverlay) {
+      cartDrawer.classList.remove('active');
+      cartOverlay.classList.remove('active');
+    }
+  }
+
+  if (cartOpenBtn) cartOpenBtn.addEventListener('click', openCart);
+  if (cartCloseBtn) cartCloseBtn.addEventListener('click', closeCart);
+  if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
+
+  function updateCartUI() {
+    const totalCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
+    if (cartBadge) cartBadge.textContent = totalCount;
+
+    if (!cartItemsContainer) return;
+
+    if (cartItems.length === 0) {
+      cartItemsContainer.innerHTML = `
+        <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 12px; color: var(--antique-gold);">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <p style="font-weight: 700; font-size: 1.1rem; color: var(--herbal-green-dark);">आपकी Diabetes Care कार्ट खाली है</p>
+          <p style="font-size: 0.9rem; margin-top: 6px;">अपनी रोज़मर्रा की सेहत और Blood Sugar संतुलन के लिए Black Garlic Prash जोड़ें।</p>
+        </div>
+      `;
+      if (cartSubtotal) cartSubtotal.textContent = '₹0';
+      return;
+    }
+
+    let subtotal = 0;
+    cartItemsContainer.innerHTML = cartItems.map((item, idx) => {
+      const itemTotal = item.price * item.qty;
+      subtotal += itemTotal;
+      return `
+        <div class="cart-item">
+          <img src="${item.img}" class="cart-item-img" alt="${item.title}">
+          <div class="cart-item-details">
+            <h4 class="cart-item-title">${item.title}</h4>
+            <div class="cart-item-price">₹${item.price.toLocaleString('en-IN')} × ${item.qty}</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+              <span style="font-size: 0.82rem; color: #2F692E; font-weight: 600;">✓ फ्री एक्सप्रेस डिलीवरी + 24K गोल्ड चम्मच</span>
+              <button onclick="window.removeCartItem(${idx})" style="color: #9c4141; font-size: 0.82rem; font-weight: 600;">हटाएं (Remove)</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    if (cartSubtotal) cartSubtotal.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+  }
+
+  window.removeCartItem = function(index) {
+    cartItems.splice(index, 1);
+    updateCartUI();
+  };
+
+  // Toast Notification
+  const toast = document.getElementById('toastNotice');
+  const toastMsg = document.getElementById('toastMsg');
+  function showToast(message) {
+    if (!toast) return;
+    if (toastMsg) toastMsg.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3500);
+  }
+
+  // Add to Cart Handlers
+  const addCartBtns = document.querySelectorAll('.btn-add-to-cart, #stickyAddToCart');
+  addCartBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const existing = cartItems.find(i => i.title === currentBundle.title);
+      if (existing) {
+        existing.qty += quantity;
+      } else {
+        cartItems.push({
+          title: `Sugar-Free Black Garlic Prash (${currentBundle.title})`,
+          price: currentBundle.price,
+          qty: quantity,
+          img: 'assets/images/hero_jar.jpg'
+        });
+      }
+      updateCartUI();
+      showToast(`${quantity} × ${currentBundle.title} कार्ट में जोड़ा गया!`);
+      openCart();
+    });
+  });
+
+  // Buy Now Handlers
+  const buyNowBtns = document.querySelectorAll('.btn-buy-now');
+  buyNowBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      cartItems = [{
+        title: `Sugar-Free Black Garlic Prash (${currentBundle.title})`,
+        price: currentBundle.price,
+        qty: 1,
+        img: 'assets/images/hero_jar.jpg'
+      }];
+      updateCartUI();
+      showToast(`${currentBundle.title} चुना गया • चेकआउट पर ले जाया जा रहा है...`);
+      setTimeout(() => {
+        openCart();
+      }, 300);
+    });
+  });
+
+  // 5. Pincode Checker Simulation
+  const pincodeInput = document.getElementById('pincodeInput');
+  const pincodeBtn = document.getElementById('pincodeBtn');
+  const pincodeStatus = document.getElementById('pincodeStatus');
+
+  if (pincodeBtn && pincodeInput && pincodeStatus) {
+    pincodeBtn.addEventListener('click', () => {
+      const pin = pincodeInput.value.trim();
+      if (pin.length === 6 && !isNaN(pin)) {
+        pincodeStatus.innerHTML = `🌿 <strong>एक्सप्रेस डिलीवरी:</strong> उपलब्ध है! <strong>कल शाम 4 बजे तक</strong> पिनकोड ${pin} पर पूरे भारत में मुफ्त डिलीवरी।`;
+        pincodeStatus.style.color = '#2F692E';
+      } else {
+        pincodeStatus.innerHTML = `⚠️ कृपया सही 6-अंकों का भारतीय पिन कोड दर्ज करें।`;
+        pincodeStatus.style.color = '#9C4141';
+      }
+    });
+  }
+
+  // 6. Accordion FAQs
+  const faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
+
+    question.addEventListener('click', () => {
+      const isActive = item.classList.contains('active');
+
+      // Close all
+      faqItems.forEach(other => {
+        other.classList.remove('active');
+        const otherAns = other.querySelector('.faq-answer');
+        if (otherAns) otherAns.style.maxHeight = null;
+      });
+
+      // If wasn't active, open it
+      if (!isActive) {
+        item.classList.add('active');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // Open first FAQ by default
+  if (faqItems.length > 0) {
+    faqItems[0].classList.add('active');
+    const firstAns = faqItems[0].querySelector('.faq-answer');
+    if (firstAns) firstAns.style.maxHeight = firstAns.scrollHeight + 'px';
+  }
+
+  // 7. Sticky Mobile Bar Observer
+  const stickyBar = document.getElementById('stickyMobileBar');
+  const heroCTA = document.querySelector('#heroBuyNow, .product-info-col .btn-buy-now');
+
+  if (stickyBar && heroCTA && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting && window.innerWidth <= 768) {
+          stickyBar.classList.add('visible');
+        } else {
+          stickyBar.classList.remove('visible');
+        }
+      });
+    }, { rootMargin: '0px 0px -50px 0px' });
+
+    observer.observe(heroCTA);
+  }
+
+  // 8. Review Filters
+  const filterTabs = document.querySelectorAll('.filter-tab-btn');
+  const reviewCards = document.querySelectorAll('.review-card');
+
+  filterTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      filterTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.getAttribute('data-filter');
+
+      reviewCards.forEach(card => {
+        if (filter === 'all' || card.getAttribute('data-tag') === filter) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // 9. Write Review Modal
+  const writeReviewBtn = document.getElementById('writeReviewBtn');
+  const reviewModal = document.getElementById('reviewModal');
+  const reviewModalClose = document.getElementById('reviewModalClose');
+  const reviewForm = document.getElementById('sampleReviewForm');
+
+  if (writeReviewBtn && reviewModal) {
+    writeReviewBtn.addEventListener('click', () => {
+      reviewModal.classList.add('active');
+    });
+  }
+
+  if (reviewModalClose && reviewModal) {
+    reviewModalClose.addEventListener('click', () => {
+      reviewModal.classList.remove('active');
+    });
+  }
+
+  if (reviewForm) {
+    reviewForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      reviewModal.classList.remove('active');
+      showToast('धन्यवाद! आपकी प्रतिक्रिया सत्यापन के लिए प्राप्त हो गई है।');
+    });
+  }
+
+  // Navbar scroll background effect
+  const navbar = document.querySelector('.navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) {
+      navbar?.classList.add('scrolled');
+    } else {
+      navbar?.classList.remove('scrolled');
+    }
+  });
+
+  // Initialize Cart UI
+  updateCartUI();
+});
