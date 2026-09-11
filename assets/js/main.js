@@ -329,23 +329,111 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Buy Now Handlers
-  const buyNowBtns = document.querySelectorAll('.btn-buy-now');
-  buyNowBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      cartItems = [{
-        title: `Sugar-Free Black Garlic Prash (${currentBundle.title})`,
-        price: currentBundle.price,
-        qty: 1,
-        img: 'assets/images/hero_jar.jpg'
-      }];
-      updateCartUI();
-      showToast(`${currentBundle.title} चुना गया • चेकआउट पर ले जाया जा रहा है...`);
-      setTimeout(() => {
-        openCart();
-      }, 300);
+  // Callback Popup Modal & Thank You Popup Modal Handlers
+  const callbackModal = document.getElementById('callbackModal');
+  const callbackModalClose = document.getElementById('callbackModalClose');
+  const callbackForm = document.getElementById('callbackForm');
+  const thankYouModal = document.getElementById('thankYouModal');
+  const thankYouModalClose = document.getElementById('thankYouModalClose');
+  const thankYouModalDoneBtn = document.getElementById('thankYouModalDoneBtn');
+  const thankYouCustomerName = document.getElementById('thankYouCustomerName');
+  const thankYouPhone = document.getElementById('thankYouPhone');
+  const thankYouCity = document.getElementById('thankYouCity');
+  const ctaButtons = document.querySelectorAll('.btn-buy-now, #heroBuyNow, #stickyBuyNow');
+
+  function openCallbackModal() {
+    if (!callbackModal) return;
+    callbackModal.classList.add('active');
+    callbackModal.setAttribute('aria-hidden', 'false');
+    const nameInput = document.getElementById('callbackName');
+    if (nameInput) setTimeout(() => nameInput.focus(), 150);
+  }
+
+  function closeCallbackModal() {
+    if (!callbackModal) return;
+    callbackModal.classList.remove('active');
+    callbackModal.setAttribute('aria-hidden', 'true');
+  }
+
+  function openThankYouModal(name, phone, city) {
+    if (!thankYouModal) return;
+    if (thankYouCustomerName) thankYouCustomerName.textContent = name || 'ग्राहक जी';
+    if (thankYouPhone) thankYouPhone.textContent = phone ? `+91 ${phone}` : '+91 ••••••••••';
+    if (thankYouCity) thankYouCity.textContent = city || 'भारत';
+    
+    thankYouModal.classList.add('active');
+    thankYouModal.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeThankYouModal() {
+    if (!thankYouModal) return;
+    thankYouModal.classList.remove('active');
+    thankYouModal.setAttribute('aria-hidden', 'true');
+  }
+
+  ctaButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openCallbackModal();
     });
   });
+
+  if (callbackModalClose) {
+    callbackModalClose.addEventListener('click', closeCallbackModal);
+  }
+
+  if (thankYouModalClose) {
+    thankYouModalClose.addEventListener('click', closeThankYouModal);
+  }
+
+  if (thankYouModalDoneBtn) {
+    thankYouModalDoneBtn.addEventListener('click', closeThankYouModal);
+  }
+
+  if (callbackModal) {
+    callbackModal.addEventListener('click', (e) => {
+      if (e.target === callbackModal) {
+        closeCallbackModal();
+      }
+    });
+  }
+
+  if (thankYouModal) {
+    thankYouModal.addEventListener('click', (e) => {
+      if (e.target === thankYouModal) {
+        closeThankYouModal();
+      }
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (callbackModal && callbackModal.classList.contains('active')) {
+        closeCallbackModal();
+      }
+      if (thankYouModal && thankYouModal.classList.contains('active')) {
+        closeThankYouModal();
+      }
+    }
+  });
+
+  if (callbackForm) {
+    callbackForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('callbackName')?.value.trim() || 'ग्राहक जी';
+      const phone = document.getElementById('callbackPhone')?.value.trim() || '';
+      const city = document.getElementById('callbackCity')?.value.trim() || '';
+
+      // Close Lead Form Modal & Open Thank You Popup Modal
+      closeCallbackModal();
+      setTimeout(() => {
+        openThankYouModal(name, phone, city);
+        showToast(`🎉 धन्यवाद ${name}! कॉलबैक रिक्वेस्ट दर्ज हो गई है।`);
+      }, 200);
+
+      callbackForm.reset();
+    });
+  }
 
 
 

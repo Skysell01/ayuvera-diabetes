@@ -812,6 +812,164 @@
   </aside>
 
   <!-- ==========================================================================
+       HEALTH EXPERT FREE CALLBACK POPUP MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="callbackModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="callbackModalTitle">
+    <div class="modal-card callback-modal-card">
+      <button class="modal-close-btn" id="callbackModalClose" aria-label="Close modal">✕</button>
+      
+      <div id="callbackFormWrap">
+        <div class="callback-header">
+          <div class="callback-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            100% Free Health Consultation
+          </div>
+          <h3 id="callbackModalTitle" class="callback-title">Free Callback from Health Expert</h3>
+          <p class="callback-subtitle">
+            डायबिटीज केयर और ब्लड शुगर नियंत्रण पर विशेषज्ञ आयुर्वेदिक डॉक्टरों से सीधे मुफ्त परामर्श पाने के लिए अपना विवरण भरें।
+          </p>
+        </div>
+
+        <form id="callbackForm" class="callback-form">
+          <div class="form-group">
+            <label for="callbackName">पूरा नाम (Full Name) <span class="required-star">*</span></label>
+            <div class="input-with-icon">
+              <svg class="field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <input type="text" id="callbackName" name="name" required placeholder="उदा: राजेश कुमार" autocomplete="name">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="callbackPhone">मोबाइल नंबर (Contact Number) <span class="required-star">*</span></label>
+            <div class="input-with-icon">
+              <svg class="field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <input type="tel" id="callbackPhone" name="contact" required placeholder="उदा: 9876543210" pattern="[0-9]{10}" maxlength="10" autocomplete="tel">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="callbackCity">शहर / राज्य (City) <span class="required-star">*</span></label>
+            <div class="input-with-icon">
+              <svg class="field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <input type="text" id="callbackCity" name="city" required placeholder="उदा: दिल्ली, लखनऊ, मुंबई" autocomplete="address-level2">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg btn-shimmer callback-submit-btn" id="callbackSubmitBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            Request Free Callback Now
+          </button>
+
+          <div class="callback-trust-footer">
+            <span>🔒 100% गोपनीय</span>
+            <span>•</span>
+            <span>👨‍⚕️ प्रमाणित आयुर्वेदिक डॉक्टर</span>
+            <span>•</span>
+            <span>⏱️ 15 मिनट में कॉलबैक</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       HEALTH EXPERT THANK YOU CONFIRMATION POPUP MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="thankYouModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="thankYouTitle">
+    <div class="modal-card thankyou-modal-card">
+      <button class="modal-close-btn" id="thankYouModalClose" aria-label="Close thank you modal">✕</button>
+      
+      <div class="thankyou-content">
+        <!-- Animated Icon Badge -->
+        <div class="thankyou-badge-wrap">
+          <div class="thankyou-icon-pulse">
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="thankyou-eyebrow">✨ रिक्वेस्ट सफलतापूर्वक दर्ज हुई</div>
+        <h3 id="thankYouTitle" class="thankyou-title">
+          धन्यवाद, <span id="thankYouCustomerName">ग्राहक जी</span>!
+        </h3>
+        <p class="thankyou-subtitle">
+          आपकी <strong>फ्री हेल्थ एक्सपर्ट कॉलबैक</strong> रिक्वेस्ट प्राप्त हो गई है। हमारे वरिष्ठ डायबिटीज वेलनेस एक्सपर्ट आपसे बहुत जल्द संपर्क करेंगे।
+        </p>
+
+        <!-- Summary Info Box -->
+        <div class="thankyou-summary-card">
+          <div class="thankyou-summary-item">
+            <div class="summary-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              कॉलबैक नंबर:
+            </div>
+            <div class="summary-value" id="thankYouPhone">+91 ••••••••••</div>
+          </div>
+
+          <div class="thankyou-summary-item">
+            <div class="summary-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              शहर / लोकेशन:
+            </div>
+            <div class="summary-value" id="thankYouCity">भारत</div>
+          </div>
+
+          <div class="thankyou-summary-item">
+            <div class="summary-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              अपेक्षित समय:
+            </div>
+            <div class="summary-value" style="color: var(--antique-gold); font-weight: 700;">अगले 15 - 30 मिनट में</div>
+          </div>
+
+          <div class="thankyou-summary-item">
+            <div class="summary-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              परामर्श प्रकार:
+            </div>
+            <div class="summary-value" style="color: var(--herbal-green-dark); font-weight: 600;">100% निशुल्क आयुर्वेदिक परामर्श</div>
+          </div>
+        </div>
+
+        <div class="thankyou-instruction-box">
+          🔔 <strong>सलाह:</strong> कृपया अपना फोन चालू रखें। हमारी मेडिकल टीम आपकी ब्लड शुगर हिस्ट्री और डाइट के अनुसार सही डोज समझाने के लिए कॉल करेगी।
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="thankyou-action-buttons">
+          <button type="button" class="btn btn-primary btn-lg" id="thankYouModalDoneBtn" style="width: 100%;">
+            ठीक है, वेबसाइट देखना जारी रखें
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
        SAMPLE REVIEW MODAL
        ========================================================================== -->
   <div class="modal-overlay" id="reviewModal">
