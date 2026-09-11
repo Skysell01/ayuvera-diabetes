@@ -186,58 +186,91 @@ textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   gap: 10px;
-  padding: 16px 32px;
+  padding: 15px 30px;
   border-radius: var(--radius-full);
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 0.98rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
   transition: var(--transition);
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.btn span {
+  display: inline-block;
+  line-height: 1.3;
+}
+
+.btn svg {
+  flex-shrink: 0;
+}
+
+/* Luxury Gold Glowing & Pulsing Animation for all primary CTAs */
+@keyframes goldGlowPulse {
+  0% {
+    box-shadow: 0 0 8px rgba(229, 195, 120, 0.5), 0 4px 16px rgba(0, 0, 0, 0.25);
+    border-color: #D4AF37;
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(255, 215, 0, 0.95), 0 0 38px rgba(229, 195, 120, 0.65), 0 6px 22px rgba(0, 0, 0, 0.35);
+    border-color: #FFF6BF;
+  }
+  100% {
+    box-shadow: 0 0 8px rgba(229, 195, 120, 0.5), 0 4px 16px rgba(0, 0, 0, 0.25);
+    border-color: #D4AF37;
+  }
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--herbal-green), var(--herbal-green-dark));
-  color: var(--bg-cream);
-  box-shadow: 0 8px 24px rgba(67, 89, 67, 0.28);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg, #374A37 0%, var(--herbal-green) 50%, var(--herbal-green-dark) 100%);
+  color: #FFFFFF;
+  border: 2px solid #E5C378;
+  box-shadow: 0 0 14px rgba(229, 195, 120, 0.5), 0 8px 24px rgba(67, 89, 67, 0.35);
+  animation: goldGlowPulse 2.2s infinite ease-in-out;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #4f684f, #233124);
-  box-shadow: 0 12px 30px rgba(67, 89, 67, 0.38);
+  background: linear-gradient(135deg, #445c44, #263627);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.9), 0 12px 32px rgba(67, 89, 67, 0.45);
+  border-color: #FFF2A8;
   transform: translateY(-2px);
 }
 
 .btn-secondary {
   background: var(--bg-cream);
   color: var(--herbal-green-dark);
-  border: 1.5px solid var(--herbal-green);
+  border: 2px solid #D4BD86;
   box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary:hover {
   background: var(--bg-beige);
-  border-color: var(--herbal-green-dark);
+  border-color: var(--antique-gold);
   transform: translateY(-2px);
 }
 
 .btn-gold {
-  background: linear-gradient(135deg, var(--antique-gold), #9b7f43);
+  background: linear-gradient(135deg, #c5a359 0%, var(--antique-gold) 50%, #8c6e33 100%);
   color: #FFFFFF;
-  box-shadow: var(--shadow-gold);
+  border: 2px solid #FFF2A8;
+  box-shadow: 0 0 16px rgba(229, 195, 120, 0.6), var(--shadow-gold);
+  animation: goldGlowPulse 2.2s infinite ease-in-out;
 }
 
 .btn-gold:hover {
-  background: linear-gradient(135deg, #c7aa69, var(--antique-gold));
+  background: linear-gradient(135deg, #d8bc79, #9b7f43);
+  border-color: #FFFFFF;
   transform: translateY(-2px);
 }
 
 .btn-lg {
-  padding: 18px 40px;
-  font-size: 1.08rem;
+  padding: 16px 32px;
+  font-size: 1.02rem;
   width: 100%;
 }
 
@@ -247,11 +280,12 @@ textarea {
   position: absolute;
   top: -50%;
   left: -60%;
-  width: 40%;
+  width: 45%;
   height: 200%;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 255, 255, 0) 100%);
   transform: rotate(25deg);
-  animation: shimmer 4s infinite ease-in-out;
+  animation: shimmer 3.2s infinite ease-in-out;
+  pointer-events: none;
 }
 
 @keyframes shimmer {
@@ -259,13 +293,13 @@ textarea {
     left: -60%;
   }
 
-  30%,
+  28%,
   100% {
-    left: 140%;
+    left: 145%;
   }
 }
 
-/* Attention Shake Animation for Order Now Buttons */
+/* Attention Shake Animation for CTA Buttons */
 @keyframes shakeCta {
   0%, 100% {
     transform: translateX(0) scale(1);
@@ -285,12 +319,12 @@ textarea {
 }
 
 .btn-shake {
-  animation: shakeCta 3.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+  animation: goldGlowPulse 2.2s infinite ease-in-out, shakeCta 4.2s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
   transform-origin: center center;
 }
 
 .btn-shake:hover {
-  animation: none;
+  animation: goldGlowPulse 1.5s infinite ease-in-out;
   transform: translateY(-2px) scale(1.02);
 }
 
@@ -3364,12 +3398,28 @@ textarea {
     margin-bottom: 20px;
   }
 
-  .nav-links {
-    display: none;
+  .nav-container {
+    justify-content: center;
+    position: relative;
+    height: 62px;
   }
 
-  .mobile-menu-toggle {
+  .brand-logo {
+    margin: 0 auto;
     display: flex;
+    justify-content: center;
+  }
+
+  .brand-logo-img {
+    height: 42px;
+    margin: 0 auto;
+  }
+
+  .nav-links,
+  .nav-actions,
+  .cart-btn,
+  .mobile-menu-toggle {
+    display: none !important;
   }
 
   .gallery-wrapper {
@@ -3557,13 +3607,77 @@ textarea {
   }
 
   .site-footer {
-    padding: 32px 0 16px;
+    padding: 36px 14px 20px;
+    text-align: center;
   }
 
-  .footer-grid {
+  .footer-grid,
+  .footer-grid.footer-grid-clean {
     grid-template-columns: 1fr;
     gap: 24px;
-    text-align: left;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-col .brand-logo {
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  .footer-col .brand-logo-img {
+    margin: 0 auto;
+    height: 44px;
+  }
+
+  .footer-col h4 {
+    font-size: 1.15rem;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .footer-col p {
+    font-size: 0.84rem;
+    line-height: 1.5;
+    margin: 0 auto 12px;
+    max-width: 320px;
+    text-align: center;
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 320px;
+    margin: 12px auto 0;
+  }
+
+  .newsletter-input {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 11px 14px;
+    font-size: 0.84rem;
+  }
+
+  .newsletter-form .btn {
+    width: 100%;
+    padding: 11px 16px;
+    font-size: 0.86rem;
+  }
+
+  .footer-bottom {
+    padding-top: 18px;
+    font-size: 0.74rem;
+    line-height: 1.45;
+    text-align: center;
+    justify-content: center;
   }
 
   .product-hero-section > .container {
@@ -3917,7 +4031,63 @@ textarea {
   }
 
   .how-to-use-cta-row .btn {
+    width: 100% !important;
     max-width: 100% !important;
+    padding: 13px 14px;
+    font-size: 0.86rem;
+    white-space: normal;
+  }
+
+  /* FAQ Consultation Card Mobile */
+  .faq-consultation-card {
+    padding: 24px 12px;
+  }
+
+  .faq-cta-btn-wrap {
+    width: 100%;
+    margin-top: 14px;
+  }
+
+  .faq-cta-btn-wrap .btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 13px 14px;
+    font-size: 0.86rem;
+    box-sizing: border-box;
+    white-space: normal;
+    text-align: center;
+  }
+
+  /* Final Purchase CTA Card Mobile */
+  .final-cta-card {
+    padding: 26px 12px;
+    border-radius: var(--radius-md);
+  }
+
+  .final-cta-grid {
+    gap: 20px;
+    text-align: center;
+  }
+
+  .final-cta-img-wrap img {
+    max-width: 180px;
+    margin: 0 auto;
+  }
+
+  .final-cta-card .section-title {
+    font-size: 1.4rem;
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+
+  .final-cta-card .btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 13px 14px;
+    font-size: 0.86rem;
+    box-sizing: border-box;
+    white-space: normal;
+    text-align: center;
   }
 
   .sticky-mobile-bar {
