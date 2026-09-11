@@ -540,50 +540,147 @@ textarea {
   border: 1px solid var(--border-cream);
   box-shadow: var(--shadow-md);
   aspect-ratio: 1/1;
-  cursor: zoom-in;
+  user-select: none;
 }
 
-.gallery-main img {
+.gallery-slider-viewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  touch-action: pan-y pinch-zoom;
+}
+
+.gallery-slider-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.gallery-slider-track.is-dragging {
+  transition: none !important;
+}
+
+.gallery-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.gallery-slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+  pointer-events: none;
   transition: transform 0.5s ease;
 }
 
-.gallery-main:hover img {
-  transform: scale(1.04);
+.gallery-main:hover .gallery-slide.active img {
+  transform: scale(1.03);
 }
 
 .gallery-badge {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  background: rgba(67, 89, 67, 0.9);
+  top: 16px;
+  left: 16px;
+  background: rgba(67, 89, 67, 0.92);
   backdrop-filter: blur(8px);
   color: var(--bg-cream);
   padding: 6px 14px;
   border-radius: var(--radius-full);
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.06em;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 12;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
 }
 
-.gallery-zoom-hint {
+/* Slider Navigation Buttons */
+.gallery-nav-btn {
   position: absolute;
-  bottom: 16px;
-  right: 16px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(6px);
-  padding: 6px 12px;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--text-muted);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(184, 154, 90, 0.35);
+  color: var(--herbal-green-dark);
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  transition: all 0.25s ease;
+  z-index: 15;
+  opacity: 0.9;
+}
+
+.gallery-nav-btn:hover {
+  background: #FFFFFF;
+  color: var(--antique-gold);
+  transform: translateY(-50%) scale(1.1);
+  opacity: 1;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+}
+
+.gallery-nav-btn.prev {
+  left: 12px;
+}
+
+.gallery-nav-btn.next {
+  right: 12px;
+}
+
+.gallery-nav-btn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* Dots Indicator */
+.gallery-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 15;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 6px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
+}
+
+.gallery-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.gallery-dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.gallery-dot.active {
+  background: #FFFFFF;
+  width: 22px;
+  border-radius: 10px;
 }
 
 /* Product Info Column */
@@ -2587,12 +2684,36 @@ textarea {
 
   .gallery-wrapper {
     flex-direction: column-reverse;
+    gap: 14px;
   }
 
   .gallery-thumbnails {
+    display: flex;
     flex-direction: row;
+    justify-content: center;
     width: 100%;
+    gap: 10px;
     overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .thumb-item {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+  }
+
+  .gallery-nav-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .gallery-nav-btn.prev {
+    left: 8px;
+  }
+
+  .gallery-nav-btn.next {
+    right: 8px;
   }
 
   .benefit-hero-grid,

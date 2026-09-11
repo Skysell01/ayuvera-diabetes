@@ -3,24 +3,165 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Gallery Thumbnail Switcher
-  const mainImage = document.getElementById('mainProductImage');
-  const thumbs = document.querySelectorAll('.thumb-item');
+  // 1. Interactive Product Gallery Slider (Touch Swipe, Arrows & Thumbnails)
+  const galleryTrack = document.getElementById('galleryTrack');
+  const galleryViewport = document.getElementById('galleryViewport');
+  const slides = document.querySelectorAll('.gallery-slide');
+  const thumbs = document.querySelectorAll('.gallery-thumbnails .thumb-item');
+  const dots = document.querySelectorAll('.gallery-dot');
+  const prevBtn = document.getElementById('galleryPrevBtn');
+  const nextBtn = document.getElementById('galleryNextBtn');
 
-  thumbs.forEach(thumb => {
+  let currentSlide = 0;
+  const totalSlides = slides.length;
+
+  function goToSlide(index) {
+    if (totalSlides === 0) return;
+    if (index < 0) index = totalSlides - 1;
+    if (index >= totalSlides) index = 0;
+    currentSlide = index;
+
+    if (galleryTrack) {
+      galleryTrack.classList.remove('is-dragging');
+      galleryTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === currentSlide);
+    });
+
+    thumbs.forEach((thumb, i) => {
+      thumb.classList.toggle('active', i === currentSlide);
+    });
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentSlide);
+    });
+  }
+
+  // Next / Prev Button Listeners
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      goToSlide(currentSlide + 1);
+    });
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      goToSlide(currentSlide - 1);
+    });
+  }
+
+  // Thumbnail Click Listeners
+  thumbs.forEach((thumb, i) => {
     thumb.addEventListener('click', () => {
-      thumbs.forEach(t => t.classList.remove('active'));
-      thumb.classList.add('active');
-      const newSrc = thumb.getAttribute('data-img');
-      if (newSrc && mainImage) {
-        mainImage.style.opacity = '0.5';
-        setTimeout(() => {
-          mainImage.src = newSrc;
-          mainImage.style.opacity = '1';
-        }, 150);
-      }
+      goToSlide(i);
     });
   });
+
+  // Dot Click Listeners
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      goToSlide(i);
+    });
+  });
+
+  // Touch Swipe & Drag Support
+  if (galleryViewport && galleryTrack) {
+    let startX = 0;
+    let startY = 0;
+    let currentX = 0;
+    let isDragging = false;
+    let isHorizontalSwipe = null;
+
+    galleryViewport.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) return;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      currentX = startX;
+      isDragging = true;
+      isHorizontalSwipe = null;
+      galleryTrack.classList.add('is-dragging');
+    }, { passive: true });
+
+    galleryViewport.addEventListener('touchmove', (e) => {
+      if (!isDragging || e.touches.length !== 1) return;
+      currentX = e.touches[0].clientX;
+      const currentY = e.touches[0].clientY;
+      const diffX = currentX - startX;
+      const diffY = currentY - startY;
+
+      if (isHorizontalSwipe === null) {
+        if (Math.abs(diffX) > 8 || Math.abs(diffY) > 8) {
+          isHorizontalSwipe = Math.abs(diffX) > Math.abs(diffY);
+        }
+      }
+
+      if (isHorizontalSwipe) {
+        const width = galleryViewport.offsetWidth || 1;
+        const offsetPercent = (diffX / width) * 100;
+        const currentTranslate = -currentSlide * 100 + offsetPercent;
+        galleryTrack.style.transform = `translateX(${currentTranslate}%)`;
+      }
+    }, { passive: true });
+
+    galleryViewport.addEventListener('touchend', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      galleryTrack.classList.remove('is-dragging');
+      const diffX = currentX - startX;
+      const threshold = 45; // min px to trigger slide
+
+      if (isHorizontalSwipe && Math.abs(diffX) > threshold) {
+        if (diffX > 0) {
+          goToSlide(currentSlide - 1);
+        } else {
+          goToSlide(currentSlide + 1);
+        }
+      } else {
+        goToSlide(currentSlide);
+      }
+      isHorizontalSwipe = null;
+    });
+
+    // Mouse Drag Support for Desktop
+    let mouseStartX = 0;
+    let isMouseDown = false;
+
+    galleryViewport.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return; // Only left click
+      mouseStartX = e.clientX;
+      isMouseDown = true;
+      galleryTrack.classList.add('is-dragging');
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isMouseDown) return;
+      const diffX = e.clientX - mouseStartX;
+      const width = galleryViewport.offsetWidth || 1;
+      const offsetPercent = (diffX / width) * 100;
+      const currentTranslate = -currentSlide * 100 + offsetPercent;
+      galleryTrack.style.transform = `translateX(${currentTranslate}%)`;
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isMouseDown) return;
+      isMouseDown = false;
+      galleryTrack.classList.remove('is-dragging');
+      const diffX = e.clientX - mouseStartX;
+      if (Math.abs(diffX) > 50) {
+        if (diffX > 0) {
+          goToSlide(currentSlide - 1);
+        } else {
+          goToSlide(currentSlide + 1);
+        }
+      } else {
+        goToSlide(currentSlide);
+      }
+    });
+  }
 
   // 2. Pricing & Bundle Selector State
   let currentBundle = {
