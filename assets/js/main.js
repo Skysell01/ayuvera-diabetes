@@ -347,23 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 5. Pincode Checker Simulation
-  const pincodeInput = document.getElementById('pincodeInput');
-  const pincodeBtn = document.getElementById('pincodeBtn');
-  const pincodeStatus = document.getElementById('pincodeStatus');
 
-  if (pincodeBtn && pincodeInput && pincodeStatus) {
-    pincodeBtn.addEventListener('click', () => {
-      const pin = pincodeInput.value.trim();
-      if (pin.length === 6 && !isNaN(pin)) {
-        pincodeStatus.innerHTML = `🌿 <strong>एक्सप्रेस डिलीवरी:</strong> उपलब्ध है! <strong>कल शाम 4 बजे तक</strong> पिनकोड ${pin} पर पूरे भारत में मुफ्त डिलीवरी।`;
-        pincodeStatus.style.color = '#2F692E';
-      } else {
-        pincodeStatus.innerHTML = `⚠️ कृपया सही 6-अंकों का भारतीय पिन कोड दर्ज करें।`;
-        pincodeStatus.style.color = '#9C4141';
-      }
-    });
-  }
 
   // 6. Accordion FAQs
   const faqItems = document.querySelectorAll('.faq-item');

@@ -21,15 +21,8 @@
   <!-- Navigation Bar -->
   <nav class="navbar" id="navbar">
     <div class="container nav-container">
-      <a href="#" class="brand-logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path d="M12 2C6.5 2 2 6.5 2 12c0 3.5 1.8 6.6 4.6 8.4.3.2.7.2 1-.1l4.4-4.3 4.4 4.3c.3.3.7.3 1 .1C20.2 18.6 22 15.5 22 12c0-5.5-4.5-10-10-10z"/>
-          <path d="M12 6v6l4 2"/>
-        </svg>
-        <div class="brand-text-wrap">
-          <span class="brand-name">AYUVERA</span>
-          <span class="brand-tagline">Diabetes Care × Ayurveda</span>
-        </div>
+      <a href="#" class="brand-logo" aria-label="Ayuvera Diabetes Care">
+        <img src="assets/images/logo.png" alt="AYUVERA" class="brand-logo-img">
       </a>
 
       <ul class="nav-links">
@@ -176,11 +169,10 @@
 
           <!-- Direct Buy CTA Button with Shake Effect -->
           <button class="btn btn-primary btn-lg btn-buy-now btn-shimmer btn-shake" id="heroBuyNow">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14"/>
-              <path d="M12 5l7 7-7 7"/>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
             </svg>
-            ORDER NOW
+            Free Callback from Health Expert
           </button>
 
           <!-- 4 Small Trust Icons -->
@@ -225,13 +217,7 @@
             </div>
           </div>
 
-          <!-- Pincode Delivery Estimator -->
-          <div class="pincode-check-wrap">
-            <span style="font-weight: 600; color: var(--herbal-green-dark);">डिलीवरी चेक करें:</span>
-            <input type="text" class="pincode-input" id="pincodeInput" placeholder="पिन कोड डालें" maxlength="6">
-            <button class="pincode-btn" id="pincodeBtn">जांचें</button>
-            <div class="pincode-status" id="pincodeStatus"></div>
-          </div>
+
 
         </div>
 
@@ -685,7 +671,10 @@
 
             <div style="margin-bottom: 12px;">
               <button class="btn btn-primary btn-lg btn-buy-now btn-shimmer btn-shake" style="width: 100%;">
-                ORDER NOW
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+                Free Callback from Health Expert
               </button>
             </div>
 
@@ -708,10 +697,7 @@
         
         <div class="footer-col">
           <div class="brand-logo" style="margin-bottom: 16px;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width: 28px; height: 28px;">
-              <path d="M12 2C6.5 2 2 6.5 2 12c0 3.5 1.8 6.6 4.6 8.4.3.2.7.2 1-.1l4.4-4.3 4.4 4.3c.3.3.7.3 1 .1C20.2 18.6 22 15.5 22 12c0-5.5-4.5-10-10-10z"/>
-            </svg>
-            <span class="brand-name" style="font-size: 1.2rem;">AYUVERA</span>
+            <img src="assets/images/logo.png" alt="AYUVERA" class="brand-logo-img" style="height: 52px;">
           </div>
           <p style="font-size: 0.88rem; line-height: 1.6; margin-bottom: 16px;">
             आयुर्वेद की प्राचीन रसायन परंपरा और आधुनिक फर्मेंटेशन विज्ञान के संगम से Diabetes के खिलाफ प्राकृतिक स्वास्थ्य और नई ऊर्जा पहुंचाना हमारा संकल्प है।
@@ -786,7 +772,7 @@
       </div>
     </div>
     <button class="btn btn-primary btn-buy-now btn-shimmer btn-shake" id="stickyBuyNow" style="padding: 10px 22px; font-size: 0.88rem; width: auto; margin-bottom: 0;">
-      ORDER NOW
+      Free Callback from Health Expert
     </button>
   </div>
 
