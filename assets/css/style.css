@@ -332,26 +332,40 @@ textarea {
    ANNOUNCEMENT BAR & NAVIGATION
    ========================================================================== */
 .announcement-bar {
-  background: linear-gradient(90deg, #374A37 0%, var(--herbal-green) 50%, #374A37 100%);
+  background: linear-gradient(90deg, #2A382A 0%, var(--herbal-green) 50%, #2A382A 100%);
   color: var(--bg-cream);
   font-size: 0.82rem;
   font-weight: 500;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   padding: 8px 16px;
   text-align: center;
   position: relative;
   z-index: 100;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
 }
 
-.announcement-bar span {
+.announcement-text {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.announcement-bar strong {
+.announcement-highlight {
   color: var(--antique-gold-light);
-  font-weight: 600;
+  font-weight: 700;
+}
+
+.announcement-sep {
+  color: var(--antique-gold);
+  opacity: 0.7;
+}
+
+.announcement-extra {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .navbar {
@@ -3567,6 +3581,21 @@ textarea {
 }
 
 @media (max-width: 576px) {
+  /* Announcement Bar Mobile Clean Up */
+  .announcement-bar {
+    padding: 6px 10px;
+    font-size: 0.74rem;
+    line-height: 1.35;
+  }
+
+  .announcement-text {
+    gap: 5px;
+  }
+
+  .announcement-extra {
+    display: none;
+  }
+
   /* Extra Compact Vertical Spacing for Mobile Devices */
   .product-hero-section {
     padding: 8px 0 20px;
