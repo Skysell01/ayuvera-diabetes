@@ -417,12 +417,74 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // --------------------------------------------------------------------------
+  // GOOGLE SHEETS INTEGRATION CONFIGURATION
+  // --------------------------------------------------------------------------
+  // Replace the URL below with your deployed Google Apps Script Web App URL.
+  // Follow the instructions provided in the guide to generate your Web App URL.
+  const GOOGLE_SHEETS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw7B7JTcG3qLVy7Bbxbux00Iz0RL1w5wYPOlA19mOb3K4aQBXaH268iPiE95PqRi-_P2g/exec';
+
   if (callbackForm) {
-    callbackForm.addEventListener('submit', (e) => {
+    callbackForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
+      const submitBtn = document.getElementById('callbackSubmitBtn');
+      const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+
       const name = document.getElementById('callbackName')?.value.trim() || 'ग्राहक जी';
       const phone = document.getElementById('callbackPhone')?.value.trim() || '';
       const city = document.getElementById('callbackCity')?.value.trim() || '';
+      const selectedPackage = currentBundle ? currentBundle.title : 'Black Garlic Prash (Sugar-Free)';
+      const packagePrice = currentBundle ? `₹${currentBundle.price}` : '₹1,899';
+      const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+      const leadData = {
+        timestamp: now,
+        name: name,
+        phone: phone,
+        city: city,
+        package: selectedPackage,
+        price: packagePrice,
+        quantity: quantity || 1,
+        pageUrl: window.location.href
+      };
+
+      // Show submitting state on button
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+          <svg class="spinner-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation: spin 1s linear infinite; margin-right: 8px;">
+            <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+            <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
+          </svg>
+          कृपया प्रतीक्षा करें...
+        `;
+      }
+
+      // Send data to Google Sheets via Google Apps Script Web App
+      if (GOOGLE_SHEETS_SCRIPT_URL && GOOGLE_SHEETS_SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
+        try {
+          await fetch(GOOGLE_SHEETS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors', // standard for Google Apps Script Web App
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(leadData)
+          });
+          console.log('Lead successfully posted to Google Sheets:', leadData);
+        } catch (err) {
+          console.error('Error posting to Google Sheets:', err);
+        }
+      } else {
+        console.warn('Google Sheets Script URL not set yet. Data logged locally:', leadData);
+      }
+
+      // Reset button state
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
 
       // Close Lead Form Modal & Open Thank You Popup Modal
       closeCallbackModal();
