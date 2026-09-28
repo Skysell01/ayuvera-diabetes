@@ -1,5 +1,5 @@
 /**
- * Ayuvera - Black Garlic Chyawanprash Landing Page Logic
+ * Madhavbaug - Black Garlic Chyawanprash Landing Page Logic
  */
 
 document.addEventListener('DOMContentLoaded', () => {
